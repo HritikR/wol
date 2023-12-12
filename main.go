@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net"
 )
 
 const wolBanner = `
@@ -28,4 +29,13 @@ func main() {
 		fmt.Println("Error: MAC address is required")
 		return
 	}
+
+	// Parse MAC address
+	hwAddr, err := net.ParseMAC(targetMAC)
+	if err != nil {
+		fmt.Println("Error parsing MAC address:", err)
+		return
+	}
+
+	sendMagicPacket(hwAddr)
 }
