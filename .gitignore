@@ -22,3 +22,9 @@ go.work
 
 # DS Store
 .DS_Store
+
+# Config
+config.json
+
+# Build Dir
+build/

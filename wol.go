@@ -1,8 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"log"
 	"net"
+	"os/exec"
+	"strings"
 )
 
 func sendMagicPacket(hwAddr net.HardwareAddr) {
@@ -38,4 +42,17 @@ func generateMagicPacket(hwAddr net.HardwareAddr) []byte {
 	}
 
 	return packet
+}
+
+func isDeviceOnline(hwAddr net.HardwareAddr) bool {
+	// Check the ARP table for the MAC address
+	cmd := exec.Command("arp", "-a")
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	err := cmd.Run()
+	if err != nil {
+		log.Println("Error running arp command:", err)
+		return false
+	}
+	return strings.Contains(out.String(), hwAddr.String())
 }
